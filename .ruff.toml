@@ -1,0 +1,4 @@
+[ruff]
+line-length = 88
+select = ["E", "F", "I"]
+exclude = ["__pycache__"]
