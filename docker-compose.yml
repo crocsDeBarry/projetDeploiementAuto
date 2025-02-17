@@ -3,14 +3,6 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./frontend
-    ports:
-      - "8501:8501"
-    #depends_on:
-    #  - backend
-
-  #backend:
-  #  build:
-  #    context: ./backend
-  #  ports:
-  #    - "5000:5000"
+      context: .
+      dockerfile: Dockerfile.advancedv2
+    image: projettest-frontend  # Assure-toi que l'image est bien nommée ici

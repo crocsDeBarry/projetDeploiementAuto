@@ -18,16 +18,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
-      # Étape 3 : Construire l'image Docker avec docker-compose
+      # Étape 3 : Construire l'image Docker avec un nom spécifique
       - name: Build Docker Image
         run: |
-          docker-compose -f docker-compose.yml build frontend
+          docker-compose -f docker-compose.yml build --no-cache frontend
 
       # Étape 4 : Connexion à GitHub Container Registry (GHCR)
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Étape 5 : Taguer l'image Docker (repository en minuscule)
+      # Étape 5 : Taguer l'image Docker avec un nom spécifique
       - name: Tag Docker Image
         run: |
           docker tag projettest-frontend ghcr.io/crocsdebarry/projetdeploiementauto:${{ github.sha }}
