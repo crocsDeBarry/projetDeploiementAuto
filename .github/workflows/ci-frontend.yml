@@ -27,14 +27,14 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Étape 5 : Taguer l'image Docker
+      # Étape 5 : Taguer l'image Docker (repository en minuscule)
       - name: Tag Docker Image
         run: |
-          docker tag projettest-frontend ghcr.io/crocsDeBarry/projetDeploiementAuto:${{ github.sha }}
-          docker tag projettest-frontend ghcr.io/crocsDeBarry/projetDeploiementAuto:latest
+          docker tag projettest-frontend ghcr.io/crocsdebarry/projetdeploiementauto:${{ github.sha }}
+          docker tag projettest-frontend ghcr.io/crocsdebarry/projetdeploiementauto:latest
 
       # Étape 6 : Pousser l'image Docker vers GHCR
       - name: Push Docker Image
         run: |
-          docker push ghcr.io/crocsDeBarry/projetDeploiementAuto:${{ github.sha }}
-          docker push ghcr.io/crocsDeBarry/projetDeploiementAuto:latest
+          docker push ghcr.io/crocsdebarry/projetdeploiementauto:${{ github.sha }}
+          docker push ghcr.io/crocsdebarry/projetdeploiementauto:latest
