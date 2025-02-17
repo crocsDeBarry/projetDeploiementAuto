@@ -3,6 +3,17 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: .
-      dockerfile: Dockerfile.advancedv2
-    image: projettest-frontend  # Assure-toi que l'image est bien nommée ici
+      context: ./frontend
+      dockerfile: Dockerfile.advancedv2  # Assurez-vous que c'est le bon Dockerfile
+    image: projettest-frontend:latest  # Nom de l'image à utiliser
+    ports:
+      - "8501:8501"
+    #depends_on:
+    #  - backend
+
+  # Uncomment if you want to add a backend service
+  # backend:
+  #   build:
+  #     context: ./backend
+  #   ports:
+  #     - "5000:5000"
