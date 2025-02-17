@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.advancedv2  # Assurez-vous que c'est le bon Dockerfile
+      dockerfile: Dockerfile  # Assurez-vous que c'est le bon Dockerfile
     image: projettest-frontend:latest  # Nom de l'image à utiliser
     ports:
       - "8501:8501"
