@@ -1,10 +1,7 @@
-name: Frontend CI
+name: Frontend CI/CD
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -13,26 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.9'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-    # Installer Miniconda
-    - name: Set up Miniconda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        auto-activate-base: false
+      - name: Install dependencies
+        run: |
+          cd frontend
+          pip install -r front/requirements.txt
 
-    - name: Install dependencies
-      run: |
-        conda env create -f frontend/environment.yml || conda env update -f frontend/environment.yml
-        conda activate projetdeploifront
+      - name: Run tests
+        run: |
+          cd frontend
+          # Ajouter les tests ici, par exemple avec pytest ou Streamlit testing
 
-    - name: Run Tests
-      run: |
-        # Exécute tes tests ici (exemple avec pytest)
-        pytest
+      - name: Build Docker image
+        run: |
+          docker build -t my-frontend-image ./frontend
+
+      - name: Push to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.GITHUB_ACTOR }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        run: |
+          docker tag my-frontend-image ghcr.io/${{ github.repository }}:frontend-latest
+          docker push ghcr.io/${{ github.repository }}:frontend-latest
