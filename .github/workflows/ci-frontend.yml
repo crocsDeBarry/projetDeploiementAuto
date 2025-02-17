@@ -12,22 +12,28 @@ jobs:
       # Étape 1 : Cloner le dépôt
       - uses: actions/checkout@v3
 
-      # Étape 2 : Construire l'image Docker avec docker-compose
+      # Étape 2 : Installer docker-compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-compose -y
+
+      # Étape 3 : Construire l'image Docker avec docker-compose
       - name: Build Docker Image
         run: |
           docker-compose -f docker-compose.yml build frontend
 
-      # Étape 3 : Connexion à GitHub Container Registry (GHCR)
+      # Étape 4 : Connexion à GitHub Container Registry (GHCR)
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Étape 4 : Taguer l'image avec les bonnes étiquettes
+      # Étape 5 : Taguer l'image Docker
       - name: Tag Docker Image
         run: |
           docker tag projettest-frontend ghcr.io/crocsDeBarry/projetDeploiementAuto:${{ github.sha }}
           docker tag projettest-frontend ghcr.io/crocsDeBarry/projetDeploiementAuto:latest
 
-      # Étape 5 : Pousser les images vers GHCR
+      # Étape 6 : Pousser l'image Docker vers GHCR
       - name: Push Docker Image
         run: |
           docker push ghcr.io/crocsDeBarry/projetDeploiementAuto:${{ github.sha }}
