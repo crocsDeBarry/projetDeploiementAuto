@@ -1,44 +1,34 @@
-name: Frontend CI/CD
+name: Build and Push Frontend Docker Image
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Étape 1 : Cloner le dépôt
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install dependencies
+      # Étape 2 : Construire l'image Docker avec docker-compose
+      - name: Build Docker Image
         run: |
-          cd frontend
-          pip install -r requirements.txt
+          docker-compose -f docker-compose.yml build frontend
 
-      - name: Run tests
+      # Étape 3 : Connexion à GitHub Container Registry (GHCR)
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # Étape 4 : Taguer l'image avec les bonnes étiquettes
+      - name: Tag Docker Image
         run: |
-          cd frontend
-          # Ajouter les tests ici, par exemple avec pytest ou Streamlit testing
+          docker tag projettest-frontend ghcr.io/crocsDeBarry/projetDeploiementAuto:${{ github.sha }}
+          docker tag projettest-frontend ghcr.io/crocsDeBarry/projetDeploiementAuto:latest
 
-      - name: Build Docker image
+      # Étape 5 : Pousser les images vers GHCR
+      - name: Push Docker Image
         run: |
-          docker build -t my-frontend-image ./frontend
-
-      - name: Push to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.GITHUB_ACTOR }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push image
-        run: |
-          docker tag my-frontend-image ghcr.io/${{ github.repository }}:frontend-latest
-          docker push ghcr.io/${{ github.repository }}:frontend-latest
+          docker push ghcr.io/crocsDeBarry/projetDeploiementAuto:${{ github.sha }}
+          docker push ghcr.io/crocsDeBarry/projetDeploiementAuto:latest
