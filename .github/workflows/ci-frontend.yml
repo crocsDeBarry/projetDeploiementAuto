@@ -30,11 +30,11 @@ jobs:
       # Étape 5 : Taguer l'image Docker avec un nom spécifique
       - name: Tag Docker Image
         run: |
-          docker tag projettest-frontend ghcr.io/crocsdebarry/projetdeploiementauto:${{ github.sha }}
-          docker tag projettest-frontend ghcr.io/crocsdebarry/projetdeploiementauto:latest
+          docker tag projettest-frontend ghcr.io/crocsdebarryorg/projetdeploiementauto:${{ github.sha }}
+          docker tag projettest-frontend ghcr.io/crocsdebarryorg/projetdeploiementauto:latest
 
       # Étape 6 : Pousser l'image Docker vers GHCR
       - name: Push Docker Image
         run: |
-          docker push ghcr.io/crocsdebarry/projetdeploiementauto:${{ github.sha }}
-          docker push ghcr.io/crocsdebarry/projetdeploiementauto:latest
+          docker push ghcr.io/crocsdebarryorg/projetdeploiementauto:${{ github.sha }}
+          docker push ghcr.io/crocsdebarryorg/projetdeploiementauto:latest
