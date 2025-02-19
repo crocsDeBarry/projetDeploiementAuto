@@ -1,10 +1,11 @@
-from flask import Flask
-from routes.katakana import katakana_bp
+from fastapi import FastAPI
+from routes.katakana import katakana_router  # Importer le router depuis le module de routes
 
-app = Flask(__name__)
+app = FastAPI()
 
-# Enregistrer le blueprint
-app.register_blueprint(katakana_bp)
+# Enregistrer le router dans l'application FastAPI
+app.include_router(katakana_router)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=5000)

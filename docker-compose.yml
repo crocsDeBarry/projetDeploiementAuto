@@ -1,19 +1,21 @@
-version: '3.8'
-
+version: "3.8"  # Bien que cette ligne soit obsolète, elle peut rester pour compatibilité
 services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile  # Assurez-vous que c'est le bon Dockerfile
-    image: projettest-frontend:latest  # Nom de l'image à utiliser
+      dockerfile: Dockerfile
     ports:
       - "8501:8501"
-    #depends_on:
-    #  - backend
+    volumes:
+      - ./frontend:/app
+    command: ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
 
-  # Uncomment if you want to add a backend service
-  # backend:
-  #   build:
-  #     context: ./backend
-  #   ports:
-  #     - "5000:5000"
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    command: ["uv", "run", "main:app", "--host", "0.0.0.0", "--port", "5000"]
