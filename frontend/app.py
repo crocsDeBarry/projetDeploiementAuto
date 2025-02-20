@@ -19,7 +19,8 @@ if st.button("Envoyer au backend"):
     )
 
     if response.status_code == 200:
-        resultat = response.json().get("message", "Erreur de réception")
+        resultat = response.json().get("reply", "Erreur de réception")
+
         st.write("Réponse du backend :")
         st.write(resultat)
     else:
