@@ -1,13 +1,20 @@
-FROM python:3.12
+# Utiliser une image de base légère avec Python
+FROM python:3.9-slim
 
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-RUN python -m pip install uv
+# Copier le fichier requirements.txt dans l'image
+COPY requirements.txt .
 
-COPY . /app/
+# Installer les dépendances Python
+RUN pip install -r requirements.txt
 
-RUN uv sync
+# Copier tous les fichiers de l'application dans l'image
+COPY . .
 
+# Exposer le port 8501 (port par défaut de Streamlit)
 EXPOSE 8501
 
-CMD [ "uv", "run", "-m", "streamlit", "run",  "main.py", "--server.port", "8501"]
+# Lancer l'application Streamlit
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

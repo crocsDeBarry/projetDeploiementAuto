@@ -1,20 +1,20 @@
-# Utilisez une image de base Python 3.12
+# Utiliser une image officielle Python 3.12 slim
 FROM python:3.12-slim
 
-# Définissez le répertoire de travail dans le conteneur
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Installez uv
-RUN python -m pip install uv
+# Copier le fichier requirements.txt dans l'image
+COPY requirements.txt .
 
-# Copiez tous les fichiers du projet dans le conteneur
-COPY . /app/
+# Installer les dépendances à partir du fichier requirements.txt
+RUN pip install -r requirements.txt
 
-# Synchronisez les dépendances avec uv
-RUN uv sync
+# Copier tous les fichiers de l'application dans l'image
+COPY . .
 
-# Exposez le port sur lequel l'application va écouter
+# Exposer le port 8000 (port par défaut d'Uvicorn)
 EXPOSE 5000
 
-# Commande pour lancer l'application
-CMD ["uv", "run", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+# Commande de démarrage de l'application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
