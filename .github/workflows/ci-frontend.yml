@@ -3,6 +3,8 @@ name: Build and Push Frontend Docker Image
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "frontend/**"  # Déclenche uniquement si un fichier dans frontend est modifié
 
 jobs:
   build-and-push:

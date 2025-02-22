@@ -1,8 +1,10 @@
-name: Build and Push Frontend Docker Image
+name: Build and Push Backend Docker Image
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "backend/**"  # Déclenche la CI uniquement si un fichier du backend est modifié
 
 jobs:
   build-and-push:
