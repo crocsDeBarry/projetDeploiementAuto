@@ -9,32 +9,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Cloner le dépôt
-      - uses: actions/checkout@v3
+      - name: 📥 Checkout du repo
+        uses: actions/checkout@v4
 
-      # Étape 2 : Installer docker-compose
-      - name: Install Docker Compose
+      - name: 🐋 Connexion à Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: 📦 Build de l’image Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install docker-compose -y
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/projetdeploiementauto-frontend:latest ./frontend
 
-      # Étape 3 : Construire l'image Docker avec un nom spécifique
-      - name: Build Docker Image
+      - name: 🚀 Push de l’image Docker
         run: |
-          docker-compose -f docker-compose.yml build --no-cache frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/projetdeploiementauto-frontend:latest
 
-      # Étape 4 : Connexion à GitHub Container Registry (GHCR)
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      # Étape 5 : Taguer l'image Docker avec un nom spécifique
-      - name: Tag Docker Image
-        run: |
-          docker tag projettest-frontend ghcr.io/crocsdebarryorg/projetdeploiementauto:${{ github.sha }}
-          docker tag projettest-frontend ghcr.io/crocsdebarryorg/projetdeploiementauto:latest
-
-      # Étape 6 : Pousser l'image Docker vers GHCR
-      - name: Push Docker Image
-        run: |
-          docker push ghcr.io/crocsdebarryorg/projetdeploiementauto:${{ github.sha }}
-          docker push ghcr.io/crocsdebarryorg/projetdeploiementauto:latest
+      - name: 🧹 Nettoyage des images locales
+        run: docker rmi ${{ secrets.DOCKER_USERNAME }}/projetdeploiementauto-frontend:latest
