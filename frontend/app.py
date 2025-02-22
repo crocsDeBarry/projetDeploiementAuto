@@ -14,7 +14,7 @@ phrase = st.text_input("Entrez une phrase :")
 if st.button("Envoyer au backend"):
     # Envoyer la phrase au backend Flask
     response = requests.post(
-        "http://localhost:5000/convert",
+        "http://backend-container:5000/convert",
         json={"phrase": phrase}
     )
 
