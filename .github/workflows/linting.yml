@@ -1,0 +1,20 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  Syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout du repo
+        uses: actions/checkout@v4
+
+      - name: 🐍 Installer Ruff
+        run: |
+          pip install ruff
+
+      - name: 📋 Vérification du code avec Ruff
+        run: |
+          ruff check .
