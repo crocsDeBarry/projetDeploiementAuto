@@ -1,27 +1,39 @@
-# Projet Deploiement Automatique
-Pour ce projet, nous avons choisi d'utiliser le modèle LLaMA 3 afin de transcrire un mot français en hiragana tout en préservant au maximum sa prononciation. Par exemple, "bonjour" deviendra → ぼんじゅる (bonjūru)
+# Projet de Déploiement Automatique avec Docker
 
-## Prérequis
+Ce projet contient un **frontend Streamlit** et un **backend FastAPI**. Il est conçu pour être déployé et exécuté via **Docker Compose**. L'objectif principal est de fournir une interface utilisateur (UI) interactive pour tester la communication entre le frontend et le backend.
 
-- Docker Hub installé
-- WSL installé 
-- Un GPU (recommandé)
+## Pré-requis
 
-## Installation
+- **Docker** et **Docker Compose** doivent être installés sur votre machine.  
+  Si ce n'est pas déjà fait, vous pouvez installer Docker en suivant la documentation officielle :  
+  [Installation de Docker](https://docs.docker.com/get-docker/)
 
-1. Lancer Docker Hub
-2. Cloner le projet :
-   
+- **Suffisamment de RAM** : Assurez-vous que votre machine dispose de **minimum 16 Go de RAM**. Si vous utilisez Ollama pour des modèles lourds, il est important d'avoir suffisamment de mémoire pour éviter des problèmes de performance.
+
+---
+
+## Installation et Exécution
+
+1. **Clonez ce repo** :
    ```bash
-   git clone https://github.com/crocsDeBarry/projetDeploiementAuto.git
-   cd projetDeploiementAuto
-   docker-compose up -build -d
+   git clone <url-du-repository>
+   cd <nom-du-dossier-du-repository>
+    ```
 
-Cela devrait télécharger les différents éléments et afficher les images et les containers dans Docher Hub
-Attention : le modèle d'intelligence artificielle peut prendre un peu de temps à s'installer, on peut vérifier son installation dans le container d'Ollama
-On devarit donc avoir trois container et trois images :
-- frontend
-- backend
-- ollama
+2. **Lancez les containers avec Docker Compose** :
+   À la racine du projet, exécutez la commande suivante pour construire et démarrer les containers en arrière-plan (en mode détaché) :
+   ```bash
+   docker compose up --build -d
+    ```
+    
+   Cette commande :
+   - **Construit** les images Docker à partir des Dockerfiles du **frontend** et du **backend**.
+   - **Lance** les services dans des containers séparés.
 
-Une fois cela fait il ne reste plus qu'à tester l'application sur [notre localhost](http://localhost:8501/)
+   ⚠️ **Attention** : Cette étape peut nécessiter une **quantité suffisante de RAM**. Assurez-vous que votre machine dispose de suffisamment de ressources pour éviter des problèmes lors de l'exécution des containers.
+
+3. **Accédez à l'interface utilisateur** :
+   Une fois les containers en cours d'exécution, vous pouvez accéder à l'application Streamlit via votre navigateur à l'adresse suivante :
+   http://localhost:8501
+
+   Cette adresse ouvrira l'interface du frontend, où vous pourrez interagir avec l'application et tester la communication entre le **frontend** et le **backend**.

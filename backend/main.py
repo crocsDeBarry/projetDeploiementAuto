@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from routes.katakana import katakana_router  # Importer le router depuis le module de routes
+from routes.hiraganas import hiraganas_router  # Importer le router depuis le module de routes
 
 app = FastAPI()
 
 # Enregistrer le router dans l'application FastAPI
-app.include_router(katakana_router)
+app.include_router(hiraganas_router)
 
 if __name__ == '__main__':
     import uvicorn

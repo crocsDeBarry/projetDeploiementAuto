@@ -8,11 +8,11 @@ class PhraseRequest(BaseModel):
     phrase: str
 
 # Création du router FastAPI
-katakana_router = APIRouter()
+hiraganas_router = APIRouter()
 
 OLLAMA_URL = "http://ollama:11434/api/generate"
 
-@katakana_router.post("/convert")
+@hiraganas_router.post("/convert")
 async def convert_to_hiragana(request: PhraseRequest):
     phrase = request.phrase
     print("Message reçu du frontend :", phrase)
